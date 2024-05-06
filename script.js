@@ -1,66 +1,254 @@
 #script.js
-const wordDisplay = document.querySelector(".word-display");
-const guessesText = document.querySelector(".guesses-text b");
-const keyboardDiv = document.querySelector(".keyboard");
-const hangmanImage = document.querySelector(".hangman-box img");
-const gameModal = document.querySelector(".game-modal");
-const playAgainBtn = gameModal.querySelector("button");
-// Initializing game variables
-let currentWord, correctLetters, wrongGuessCount;
+console.clear();
+
+"use strict";
+
+//Creates buttons for guessing
+let i = 1;
+let alphabet = document.getElementById("alphabet");
+//For loop and switch to letter each button
+for (i; i <= 26; i++) {
+  let letter;
+  switch (i) {
+    case 1:
+      letter = 'A'
+      break;
+    case 2:
+      letter = 'B'
+      break;
+    case 3:
+      letter = 'C'
+      break;
+    case 4:
+      letter = 'D'
+      break;
+    case 5:
+      letter = 'E'
+      break;
+    case 6:
+      letter = 'F'
+      break;
+    case 7:
+      letter = 'G'
+      break;
+    case 8:
+      letter = 'H'
+      break;
+    case 9:
+      letter = 'I'
+      break;
+    case 10:
+      letter = 'J'
+      break;
+    case 11:
+      letter = 'K'
+      break;
+    case 12:
+      letter = 'L'
+      break;
+    case 13:
+      letter = 'M'
+      break;
+    case 14:
+      letter = 'N'
+      break;
+    case 15:
+      letter = 'O'
+      break;
+    case 16:
+      letter = 'P'
+      break;
+    case 17:
+      letter = 'Q'
+      break;
+    case 18:
+      letter = 'R'
+      break;
+    case 19:
+      letter = 'S'
+      break;
+    case 20:
+      letter = 'T'
+      break;
+    case 21:
+      letter = 'U'
+      break;
+    case 22:
+      letter = 'V'
+      break;
+    case 23:
+      letter = 'W'
+      break;
+    case 24:
+      letter = 'X'
+      break;
+    case 25:
+      letter = 'Y'
+      break;
+    case 26:
+      letter = 'Z'
+      break;
+  }
+  let button = document.createElement("button");
+  button.innerHTML = letter;
+  alphabet.appendChild(button);
+  button.addEventListener ("click", e => initGame(e.target, letter));
+}
+
+//Word and hint list
+const wordList = [
+  {
+    word: "Wealth",
+    hint: "Another word for rich"
+  },
+  
+  {
+    word: "Oxygen",
+    hint: "Tree invention"
+  },
+  
+  {
+    word: "Before",
+    hint: "Opposite of after"
+  },
+  
+  {
+    word: "Puzzle",
+    hint: "Game that tests knowledge"
+  },
+  
+  {
+  word: "Reward",
+  hint: "Gift of recognition"
+  },
+  
+  {
+    word: "baboon",
+    hint: "another word for ape"
+  },
+  
+  {
+    word: "eagles", 
+    hint: "Large prey bird (plural)"
+  },
+  
+  {
+    word:"fabric",
+    hint:"cloth produced by knitting"
+  },
+  
+  {
+    word: "hacked",
+    hint: "unauthorized access to a computer"
+  },
+  
+  {
+    word: "kabobs",
+    hint:"popular dish on a stick"
+  },
+  
+  {
+    word:"nachos",
+    hint:"loaded chips"
+  },
+  
+  {
+    word:"rabbit",
+    hint:"small fluffy animal",
+  },
+  
+  {
+    word:"vacuum",
+    hint:"dyson, hoover or roomba",
+  },
+]
+
+//Reused variables.
+let currentWord
+let correctLetters = []
+let playerGuess = document.getElementById('guess');
+let wrongGuessCount = 0;
 const maxGuesses = 6;
-const resetGame = () => {
-    // Ressetting game variables and UI elements
-    correctLetters = [];
-    wrongGuessCount = 0;
-    hangmanImage.src = "images/hangman-0.svg";
-    guessesText.innerText = `${wrongGuessCount} / ${maxGuesses}`;
-    wordDisplay.innerHTML = currentWord.split("").map(() => `<li class="letter"></li>`).join("");
-    keyboardDiv.querySelectorAll("button").forEach(btn => btn.disabled = false);
-    gameModal.classList.remove("show");
+let numberOfGuesses = document.getElementById('guess-count');
+let mainWrap = document.getElementById('main-wrap');
+let hangmanImg = document.getElementById('character');
+let modal = document.getElementById('modal');
+let modalResult = document.getElementById('modal-result');
+let modalAnswer = document.getElementById('modal-answer');
+let emoji = document.getElementById('emoji');
+let retry = document.getElementById('retry');
+
+//Function to update HTML guess count.
+function updateGuessCount() {
+  numberOfGuesses.innerText = 'Guesses: ' + wrongGuessCount + '/' + maxGuesses;
 }
-const getRandomWord = () => {
-    // Selecting a random word and hint from the wordList
-    const { word, hint } = wordList[Math.floor(Math.random() * wordList.length)];
-    currentWord = word; // Making currentWord as random word
-    document.querySelector(".hint-text b").innerText = hint;
-    resetGame();
+
+//Function for getting random word and setting up game.
+function getRandomWord() {
+  const {word, hint} = wordList[Math.floor(Math.random() * wordList.length)];
+  currentWord = word.toUpperCase()
+  console.log(word, hint);
+  document.getElementById('hint').innerText = "Hint: " + hint;
+  playerGuess.innerHTML = word.split("").map(() => '<li class="letter"></li>').join("");
+  hangmanImg.src = 'images/hangman-' + wrongGuessCount + '.svg';
+  updateGuessCount()
 }
-const gameOver = (isVictory) => {
-    // After game complete.. showing modal with relevant details
-    const modalText = isVictory ? `You found the word:` : 'The correct word was:';
-    gameModal.querySelector("img").src = `images/${isVictory ? 'victory' : 'lost'}.gif`;
-    gameModal.querySelector("h4").innerText = isVictory ? 'Congrats!' : 'Game Over!';
-    gameModal.querySelector("p").innerHTML = `${modalText} <b>${currentWord}</b>`;
-    gameModal.classList.add("show");
+
+//Function for resetting data to play again.
+function resetAll() {
+  correctLetters = []
+  wrongGuessCount = 0;
+  alphabet.querySelectorAll('button').forEach(btn => btn.disabled = false);
+  modal.classList.add('display');
+  mainWrap.classList.remove('background');
+document.getElementById('hint').innerText = "Hint: " + hint;
+playerGuess.innerHTML = currentWord.split("").map(() => '<li class="letter"></li>').join("");
+document.getElementById('hint').innerText = "Hint: " + hint;
+ playerGuess.innerHTML = currentWord.split("").map(() => '<li class="letter"></li>').join("");
+  getRandomWord();
 }
-const initGame = (button, clickedLetter) => {
-    // Checking if clickedLetter is exist on the currentWord
-    if(currentWord.includes(clickedLetter)) {
-        // Showing all correct letters on the word display
-        [...currentWord].forEach((letter, index) => {
-            if(letter === clickedLetter) {
-                correctLetters.push(letter);
-                wordDisplay.querySelectorAll("li")[index].innerText = letter;
-                wordDisplay.querySelectorAll("li")[index].classList.add("guessed");
-            }
-        });
+
+//Play again button to resetAll() function. 
+retry.addEventListener ("click", e => resetAll());
+
+//Initiate game function. Guess functionality, as well as game over and winning modal. Else if in line 184 so count can't go over max guesses. Hangman images update by number through incorrect guess count.
+function initGame(button, clickedLetter) {
+  
+if(currentWord.includes(clickedLetter)) {
+    [...currentWord].forEach((letter, index) => {
+      if (letter === clickedLetter) {
+        correctLetters.push(letter)
+        playerGuess.querySelectorAll("li")[index].innerText = letter;
+        if (correctLetters.length === currentWord.length) {
+          setTimeout (() => {
+            emoji.src = 'https://media.tenor.com/fEthhnb02dIAAAAe/bucktooth-emoji-patrick-star.png';
+            modalResult.innerHTML = "You win!";
+            modalAnswer.innerHTML = currentWord + "!";
+            modal.classList.remove('display');
+            mainWrap.classList.add('background');
+          }, 300)
+        }
+      }})
     } else {
-        // If clicked letter doesn't exist then update the wrongGuessCount and hangman image
+      if (wrongGuessCount < maxGuesses - 1) {
         wrongGuessCount++;
-        hangmanImage.src = `images/hangman-${wrongGuessCount}.svg`;
+        hangmanImg.src = 'images/hangman-' + wrongGuessCount + '.svg';
+        updateGuessCount();
+       } else if (wrongGuessCount < maxGuesses) {
+           wrongGuessCount++;
+           hangmanImg.src = 'images/hangman-' + wrongGuessCount + '.svg';
+           updateGuessCount();
+           setTimeout (() => {
+               emoji.src = 'https://media1.tenor.com/m/ZuIi8_mAm74AAAAC/scared-concerned.gif';
+               modalResult.innerHTML = "Game over";
+               modalAnswer.innerHTML = currentWord + "!";
+               modal.classList.remove('display');
+               mainWrap.classList.add('background');
+             }, 300)     
+         }
+     }
+      button.disabled = true
     }
-    button.disabled = true; // Disabling the clicked button so user can't click again
-    guessesText.innerText = `${wrongGuessCount} / ${maxGuesses}`;
-    // Calling gameOver function if any of these condition meets
-    if(wrongGuessCount === maxGuesses) return gameOver(false);
-    if(correctLetters.length === currentWord.length) return gameOver(true);
-}
-// Creating keyboard buttons and adding event listeners
-for (let i = 97; i <= 122; i++) {
-    const button = document.createElement("button");
-    button.innerText = String.fromCharCode(i);
-    keyboardDiv.appendChild(button);
-    button.addEventListener("click", (e) => initGame(e.target, String.fromCharCode(i)));
-}
-getRandomWord();
-playAgainBtn.addEventListener("click", getRandomWord);
+
+//Starts game off
+getRandomWord()
