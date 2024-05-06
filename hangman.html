@@ -9,26 +9,34 @@
     <script src="scripts/word-list.js" defer></script>
     <script src="scripts/script.js" defer></script>
 </head>
+
 <body>
-    <div class="game-modal">
-        <div class="content">
-            <img src="#" alt="gif">
-            <h4>Game Over!</h4>
-            <p>The correct word was: <b>rainbow</b></p>
-            <button class="play-again">Play Again</button>
-        </div>
+  <div id='modal' class='display'>
+    <img id='emoji'></img>
+    <h2 id='modal-result' style='font-weight:bold;'></h2>
+    <p>The correct word was...</p>
+      <b id='modal-answer'></b>
+    <button id='retry'>Play again?</button>
+  </div>
+  <div id='main-wrap'>
+    
+    <div id='hangman-wrap'>
+      <img id='character' src=''></img>
     </div>
-    <div class="container">
-        <div class="hangman-box">
-            <img src="#" draggable="false" alt="hangman-img">
-            <h1>Hangman Game</h1>
-        </div>
-        <div class="game-box">
-            <ul class="word-display"></ul>
-            <h4 class="hint-text">Hint: <b></b></h4>
-            <h4 class="guesses-text">Incorrect guesses: <b></b></h4>
-            <div class="keyboard"></div>
-        </div>
+    
+    <div id=gameside-wrap>
+      <ul id='guess'></ul>
+      <div id='hint-box'>
+        <h2 id='hint'></h2>
+        <p id='guess-count'></p>
+      </div>
+      <div id='alphabet'></div>
     </div>
+
+  </div>
+  
 </body>
-</html>
+
+
+
+    
