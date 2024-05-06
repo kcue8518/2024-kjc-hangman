@@ -1,11 +1,14 @@
 #script.js
+//clearing the console (allowing game to begin on a fresh slate)
 console.clear();
 
+//less errors will occur with strict mode on 
 "use strict";
 
 //Creates buttons for guessing
 let i = 1;
 let alphabet = document.getElementById("alphabet");
+
 //For loop and switch to letter each button
 for (i; i <= 26; i++) {
   let letter;
