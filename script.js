@@ -1,4 +1,3 @@
-#script.js
 //clearing the console (allowing game to begin on a fresh slate)
 console.clear();
 
@@ -8,7 +7,6 @@ console.clear();
 //Creates buttons for guessing
 let i = 1;
 let alphabet = document.getElementById("alphabet");
-
 //For loop and switch to letter each button
 for (i; i <= 26; i++) {
   let letter;
@@ -99,7 +97,7 @@ for (i; i <= 26; i++) {
 }
 
 //Word and hint list
-const wordList = [
+let wordList = [
   {
     word: "Wealth",
     hint: "Another word for rich"
@@ -116,55 +114,83 @@ const wordList = [
   },
   
   {
-    word: "Puzzle",
-    hint: "Game that tests knowledge"
+    word: "Apex",
+    hint: "_____ predator"
   },
   
   {
-  word: "Reward",
-  hint: "Gift of recognition"
+    word: "Rhythm",
+    hint: "Repeated pattern of sound"
   },
   
   {
-    word: "baboon",
-    hint: "another word for ape"
+    word: "Cowboy",
+    hint: "Wild west"
   },
   
   {
-    word: "eagles", 
-    hint: "Large prey bird (plural)"
+    word: "Eagle", 
+    hint: "Large prey bird"
   },
   
   {
-    word:"fabric",
-    hint:"cloth produced by knitting"
+    word: "Fabric",
+    hint: "Cloth produced by knitting"
   },
   
   {
-    word: "hacked",
-    hint: "unauthorized access to a computer"
+    word: "Hacked",
+    hint: "Unauthorized access to a computer"
   },
   
   {
-    word: "kabobs",
-    hint:"popular dish on a stick"
+    word: "Kabob",
+    hint: "Popular dish on a stick"
   },
   
   {
-    word:"nachos",
-    hint:"loaded chips"
+    word: "Nachos",
+    hint: "Loaded chips"
   },
   
   {
-    word:"rabbit",
-    hint:"small fluffy animal",
+    word: "Rabbit",
+    hint: "Small fluffy animal",
   },
   
   {
-    word:"vacuum",
-    hint:"dyson, hoover or roomba",
+    word: "Vacuum",
+    hint: "Dyson, hoover or roomba",
   },
+
+  {
+    word: "Bamboo",
+    hint: "Strong stalk for food and framing Japanese houses"
+  },
+
+  {
+    word: "Arcade",
+    hint: "Place to socialize and play games"
+  },
+  
+  {
+    word: "Checkers",
+    hint: "Turn-based game"
+  },
+
+  {
+    word: "Sakura",
+    hint: "Flowering cherry tree"
+  },
+  
+  {
+    word: "Neptune",
+    hint: "An icy planet"
+  }
+  
 ]
+
+let usedWords = []
 
 //Reused variables.
 let currentWord
@@ -186,15 +212,27 @@ function updateGuessCount() {
   numberOfGuesses.innerText = 'Guesses: ' + wrongGuessCount + '/' + maxGuesses;
 }
 
-//Function for getting random word and setting up game.
+//Function for getting random word and setting up game and word list.
 function getRandomWord() {
-  const {word, hint} = wordList[Math.floor(Math.random() * wordList.length)];
-  currentWord = word.toUpperCase()
+  let newWordIndex = [Math.floor(Math.random() * wordList.length)]
+  const {word, hint} = wordList[newWordIndex];
   console.log(word, hint);
+  currentWord = word.toUpperCase()
   document.getElementById('hint').innerText = "Hint: " + hint;
   playerGuess.innerHTML = word.split("").map(() => '<li class="letter"></li>').join("");
-  hangmanImg.src = 'images/hangman-' + wrongGuessCount + '.svg';
+  hangmanImg.src = 'images/hangman-' + wrongGuessCount + '.png';
   updateGuessCount()
+  if(wordList.length > 1) {
+  usedWords.push(wordList[newWordIndex]);
+  wordList.splice(newWordIndex, 1);
+  } else {
+    usedWords.forEach((list) => {
+        wordList.push(list); 
+    })
+    usedWords = []
+    usedWords.push(wordList[newWordIndex]);
+    wordList.splice(newWordIndex, 1);
+  }
 }
 
 //Function for resetting data to play again.
@@ -204,10 +242,8 @@ function resetAll() {
   alphabet.querySelectorAll('button').forEach(btn => btn.disabled = false);
   modal.classList.add('display');
   mainWrap.classList.remove('background');
-document.getElementById('hint').innerText = "Hint: " + hint;
-playerGuess.innerHTML = currentWord.split("").map(() => '<li class="letter"></li>').join("");
-document.getElementById('hint').innerText = "Hint: " + hint;
- playerGuess.innerHTML = currentWord.split("").map(() => '<li class="letter"></li>').join("");
+  document.getElementById('hint').innerText = "Hint: " + hint;
+  playerGuess.innerHTML = currentWord.split("").map(() => '<li class="letter"></li>').join("");
   getRandomWord();
 }
 
@@ -224,7 +260,7 @@ if(currentWord.includes(clickedLetter)) {
         playerGuess.querySelectorAll("li")[index].innerText = letter;
         if (correctLetters.length === currentWord.length) {
           setTimeout (() => {
-            emoji.src = 'https://media.tenor.com/fEthhnb02dIAAAAe/bucktooth-emoji-patrick-star.png';
+            emoji.src = '/images/winner-emoji.png';
             modalResult.innerHTML = "You win!";
             modalAnswer.innerHTML = currentWord + "!";
             modal.classList.remove('display');
@@ -235,19 +271,19 @@ if(currentWord.includes(clickedLetter)) {
     } else {
       if (wrongGuessCount < maxGuesses - 1) {
         wrongGuessCount++;
-        hangmanImg.src = 'images/hangman-' + wrongGuessCount + '.svg';
+        hangmanImg.src = '/images/hangman-' + wrongGuessCount + '.png';
         updateGuessCount();
        } else if (wrongGuessCount < maxGuesses) {
            wrongGuessCount++;
-           hangmanImg.src = 'images/hangman-' + wrongGuessCount + '.svg';
+           hangmanImg.src = '/images/hangman-' + wrongGuessCount + '.png';
            updateGuessCount();
            setTimeout (() => {
-               emoji.src = 'https://media1.tenor.com/m/ZuIi8_mAm74AAAAC/scared-concerned.gif';
+               emoji.src = '/images/lost-emoji.png';
                modalResult.innerHTML = "Game over";
                modalAnswer.innerHTML = currentWord + "!";
                modal.classList.remove('display');
                mainWrap.classList.add('background');
-             }, 300)     
+             }, 300)
          }
      }
       button.disabled = true
