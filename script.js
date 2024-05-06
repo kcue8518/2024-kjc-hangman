@@ -1,10 +1,7 @@
-//clearing the console (allowing game to begin on a fresh slate)
-console.clear();
-
 //less errors will occur with strict mode on 
 "use strict";
 
-//Creates buttons for guessing
+//Initizaling a variable with a value of 1 then retrieving an element from the id "alphabet" and stores it in the variable alphabet. 
 let i = 1;
 let alphabet = document.getElementById("alphabet");
 //For loop and switch to letter each button
@@ -90,9 +87,13 @@ for (i; i <= 26; i++) {
       letter = 'Z'
       break;
   }
+  //A new <button> element is created for each letter
   let button = document.createElement("button");
+  //The inner HTML of each button is set to the corresponding letter
   button.innerHTML = letter;
+  //Each button is appended as a child to the alphabet element in the DOM 
   alphabet.appendChild(button);
+  //When a button is clicked, the initGame function is called with the button element and the corresponding letter as arguments.
   button.addEventListener ("click", e => initGame(e.target, letter));
 }
 
