@@ -1,8 +1,9 @@
 //less errors will occur with strict mode on 
 "use strict";
 
-//Initizaling a variable with a value of 1 then retrieving an element from the id "alphabet" and stores it in the variable alphabet. 
+//Initizaling variable i with a value of 1
 let i = 1;
+//retrieving an element from the id "alphabet" and storing it in the variable alphabet
 let alphabet = document.getElementById("alphabet");
 //For loop and switch to letter each button
 for (i; i <= 26; i++) {
@@ -87,13 +88,13 @@ for (i; i <= 26; i++) {
       letter = 'Z'
       break;
   }
-  //A new <button> element is created for each letter (Keyboard Creation)
+  //A new button element is created for each letter (Keyboard Creation)
   let button = document.createElement("button");
   //The inner HTML of each button is set to the corresponding letter
   button.innerHTML = letter;
   //Each button is appended as a child to the alphabet element in the DOM 
   alphabet.appendChild(button);
-  //When a button is clicked, the initGame function is called with the button element and the corresponding letter as arguments.
+  //When a button is clicked, the initGame function is called with the button element and the corresponding letter as arguments
   button.addEventListener ("click", e => initGame(e.target, letter));
 }
 
