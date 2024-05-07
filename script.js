@@ -87,7 +87,7 @@ for (i; i <= 26; i++) {
       letter = 'Z'
       break;
   }
-  //A new <button> element is created for each letter
+  //A new <button> element is created for each letter (Keyboard Creation)
   let button = document.createElement("button");
   //The inner HTML of each button is set to the corresponding letter
   button.innerHTML = letter;
@@ -97,7 +97,7 @@ for (i; i <= 26; i++) {
   button.addEventListener ("click", e => initGame(e.target, letter));
 }
 
-//Word and hint list
+//Word and hint list (Array)
 let wordList = [
   {
     word: "Wealth",
@@ -116,7 +116,7 @@ let wordList = [
   
   {
     word: "Apex",
-    hint: "_____ predator"
+    hint: "____ predator"
   },
   
   {
