@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-//Verifying that the browser can interpret and show the characters correctly
+        //Verifying that the browser can interpret and show the characters correctly
         <meta charset="utf-8">
         <title>Hangman Project</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,7 +11,7 @@
     </head>
 
     <body> 
-         //linking the javascript
+    //linking the javascript
     <script src="index.js" async defer></script>
 
         <div id='modal' class='display'>
@@ -38,5 +38,14 @@
             </div>
           
         </div>
+        <canvas id="copyrightCanvas" width="500" height="200"></canvas>
+<script>
+  const canvas = document.getElementById('copyrightCanvas');
+  const ctx = canvas.getContext('2d');
+
+  // Draw the copyright symbol
+  ctx.font = '30px Arial';
+  ctx.fillText('\u00A9 Kelseys Hangman Game!', 30, 60);
+</script>
     </body>
 </html>
