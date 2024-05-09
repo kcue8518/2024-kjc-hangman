@@ -191,7 +191,7 @@ let wordList = [
 //Array for used words 
 let usedWords = []
 
-//Reused variables.
+//Reused variables. link for modal - https://www.w3schools.com/howto/howto_css_modals.asp
 let currentWord
 let correctLetters = []
 let playerGuess = document.getElementById('guess');
