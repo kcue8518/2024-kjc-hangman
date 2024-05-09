@@ -3,14 +3,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap');
 
 :root {
-    --blue-grey: #474853;
+	--blue-grey: #474853;
     --light-purple: #CAB4DE;
     --dark-grey: #CCCCCC;
     --white: #FAFAFA;
 }
 
 * {
-    cursor: default;
+	cursor: default;
     font-family: montserrat, "lucida sans unicode", Arial;
     font-weight: 400;
     font-size: min(1vw, 20px);
@@ -21,7 +21,7 @@ body {
     position: relative;
     min-height: 100vh;
     background-color: var(--blue-grey);
-    color: var(--light-purple);
+	color: var(--light-purple);
     margin: 0;
     height: 100%;
     overflow: hidden;
@@ -42,17 +42,17 @@ p,b {
 
 ul,
 li	{
-    list-style: none;
+	list-style: none;
     text-align: center;
 }
 
 button {
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    margin: auto auto 1rem auto;
-    padding: 0.6rem 1rem;
-    font-size: 1.3rem;
+	display: flex;
+	justify-content: center;
+	margin: auto auto 1rem auto;
+	padding: 0.6rem 1rem;
+	font-size: 1.3rem;
     border-radius: 2px;
     border: none 0;
     color: black;
@@ -65,7 +65,7 @@ button:disabled {
 }
 
 button:hover {
-    transform: scale(1.1);
+	transform: scale(1.1);
     background-color: var(--dark-grey)
 }
 
@@ -198,6 +198,7 @@ button:active {
     width: calc(100% / 9 - 1.2rem );
 }
 
+/* adjusts game layout according to screen orientation */
 @media screen and (max-width: 100vh) {
 
     * {
