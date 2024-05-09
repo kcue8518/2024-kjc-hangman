@@ -1,9 +1,8 @@
-//less errors will occur with strict mode on 
+//helpful with debugging, less errors will occur 
 "use strict";
 
-//Initizaling variable i with a value of 1
+//Creates buttons for guessing, Initizaling variable and retrieving an element from the id "alphabet"
 let i = 1;
-//retrieving an element from the id "alphabet" and storing it in the variable alphabet
 let alphabet = document.getElementById("alphabet");
 //For loop and switch to letter each button
 for (i; i <= 26; i++) {
@@ -88,13 +87,10 @@ for (i; i <= 26; i++) {
       letter = 'Z'
       break;
   }
-  //A new button element is created for each letter (Keyboard Creation)
+  //Creates the button and gives each button functionalilty according to what letter is assigned
   let button = document.createElement("button");
-  //The inner HTML of each button is set to the corresponding letter
   button.innerHTML = letter;
-  //Each button is appended as a child to the alphabet element in the DOM 
   alphabet.appendChild(button);
-  //When a button is clicked, the initGame function is called with the button element and the corresponding letter as arguments
   button.addEventListener ("click", e => initGame(e.target, letter));
 }
 
@@ -117,7 +113,7 @@ let wordList = [
   
   {
     word: "Apex",
-    hint: "____ predator"
+    hint: "_____ predator"
   },
   
   {
@@ -192,6 +188,7 @@ let wordList = [
   
 ]
 
+//Array for used words 
 let usedWords = []
 
 //Reused variables.
@@ -252,6 +249,39 @@ function resetAll() {
 //Play again button to resetAll() function. 
 retry.addEventListener ("click", e => resetAll());
 
+// Function to load hangman images asynchronously
+function loadHangmanImages() {
+  return new Promise((resolve, reject) => {
+      const hangmanImages = [];
+      for (let i = 0; i <= maxGuesses; i++) {
+          const img = new Image();
+          img.onload = () => {
+              hangmanImages.push(img);
+// Resolve the promise when all images are loaded.
+              if (hangmanImages.length === maxGuesses + 1) {
+                  resolve(hangmanImages);
+              }
+          };
+// Reject the promise if any image fails to load.
+          img.onerror = () => reject(new Error('Failed to load hangman images'));
+          img.src = `images/hangman-${i}.png`;
+      }
+  });
+}
+
+// Load hangman images asynchronously
+loadHangmanImages()
+  .then(images => {
+      // All hangman images loaded successfully
+      console.log('Hangman images loaded successfully:', images);
+      // Now you can start the game
+      getRandomWord();
+  })
+  .catch(error => {
+      // Error occurred while loading hangman images
+      console.error('Error loading hangman images:', error);
+  });
+
 //Initiate game function. Guess functionality, as well as game over and winning modal. Else if in line 184 so count can't go over max guesses. Hangman images update by number through incorrect guess count.
 function initGame(button, clickedLetter) {
   
@@ -262,7 +292,7 @@ if(currentWord.includes(clickedLetter)) {
         playerGuess.querySelectorAll("li")[index].innerText = letter;
         if (correctLetters.length === currentWord.length) {
           setTimeout (() => {
-            emoji.src = '/images/winner-emoji.png';
+            emoji.src = 'https://media.tenor.com/fEthhnb02dIAAAAe/bucktooth-emoji-patrick-star.png';
             modalResult.innerHTML = "You win!";
             modalAnswer.innerHTML = currentWord + "!";
             modal.classList.remove('display');
@@ -273,14 +303,14 @@ if(currentWord.includes(clickedLetter)) {
     } else {
       if (wrongGuessCount < maxGuesses - 1) {
         wrongGuessCount++;
-        hangmanImg.src = '/images/hangman-' + wrongGuessCount + '.png';
+        hangmanImg.src = 'images/hangman-' + wrongGuessCount + '.png';
         updateGuessCount();
-       } else if (wrongGuessCount < maxGuesses) {
+       } else if (wrongGuessCount === maxGuesses - 1) {
            wrongGuessCount++;
-           hangmanImg.src = '/images/hangman-' + wrongGuessCount + '.png';
+           hangmanImg.src = 'images/hangman-' + wrongGuessCount + '.png';
            updateGuessCount();
            setTimeout (() => {
-               emoji.src = '/images/lost-emoji.png';
+               emoji.src = 'https://media1.tenor.com/m/ZuIi8_mAm74AAAAC/scared-concerned.gif';
                modalResult.innerHTML = "Game over";
                modalAnswer.innerHTML = currentWord + "!";
                modal.classList.remove('display');
